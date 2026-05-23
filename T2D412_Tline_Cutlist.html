@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>RF T2D412 – Folded T-Line Cut List | 32 Hz</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #0d0d0d;
+    color: #e8e8e8;
+    padding: 28px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .header {
+    background: linear-gradient(135deg, #b22222 0%, #8b0000 100%);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    border: 1px solid #cc2222;
+  }
+  .header h1 {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .header .subtitle {
+    color: #ffaaaa;
+    font-size: 0.92rem;
+    margin-top: 6px;
+    letter-spacing: 0.02em;
+  }
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .badge {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.82rem;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  section { margin-bottom: 28px; }
+  h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ff4444;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid #2a2a2a;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+
+  /* MATH CARD GRID */
+  .math-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .math-card {
+    background: #1a1a1a;
+    border: 1px solid #2c2c2c;
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .math-card .label {
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .math-card .value {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #ff6666;
+  }
+  .math-card .detail {
+    font-size: 0.78rem;
+    color: #aaa;
+    margin-top: 4px;
+  }
+
+  /* FOLDED DIAGRAM */
+  .diagram-wrap {
+    background: #141414;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 20px;
+    overflow-x: auto;
+  }
+  svg text { font-family: 'Segoe UI', Arial, sans-serif; }
+
+  /* CUTLIST TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  thead tr {
+    background: #b22222;
+    color: #fff;
+  }
+  thead th {
+    padding: 11px 14px;
+    text-align: left;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+  }
+  tbody tr:nth-child(even) { background: #181818; }
+  tbody tr:nth-child(odd)  { background: #141414; }
+  tbody tr:hover { background: #222; }
+  tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #222;
+    vertical-align: top;
+  }
+  .part-name { font-weight: 700; color: #ff8888; }
+  .dim { font-family: 'Courier New', monospace; color: #ffdddd; font-weight: 600; }
+  .note { font-size: 0.78rem; color: #aaa; }
+
+  /* ASSEMBLY ORDER */
+  .steps { counter-reset: step; display: grid; gap: 12px; }
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .step-num {
+    min-width: 34px;
+    height: 34px;
+    background: #b22222;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+  .step-body h3 { font-size: 0.9rem; font-weight: 700; color: #ff8888; margin-bottom: 4px; }
+  .step-body p  { font-size: 0.83rem; color: #bbb; line-height: 1.55; }
+
+  /* AMP SETTINGS */
+  .settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .setting-card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .setting-card .s-label {
+    font-size: 0.72rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 5px;
+  }
+  .setting-card .s-value {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #ff6666;
+  }
+  .setting-card .s-note {
+    font-size: 0.76rem;
+    color: #999;
+    margin-top: 4px;
+    line-height: 1.45;
+  }
+
+  /* DAMPING */
+  .damp-bar-wrap {
+    background: #141414;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .damp-label-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  .damp-bar {
+    height: 36px;
+    border-radius: 6px;
+    background: #222;
+    overflow: hidden;
+    display: flex;
+  }
+  .damp-free  { background: #333; flex: 1.5; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: #ccc; font-weight: 600; border-right: 2px dashed #555; }
+  .damp-fill  { background: linear-gradient(90deg, #7a1a1a, #b22222); flex: 2; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: #fff; font-weight: 600; }
+  .damp-notes { margin-top: 14px; font-size: 0.82rem; color: #aaa; line-height: 1.6; }
+
+  .warn-box {
+    background: #1e1200;
+    border: 1px solid #554400;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 0.83rem;
+    color: #ffcc66;
+    line-height: 1.6;
+    margin-top: 8px;
+  }
+  .warn-box strong { color: #ffaa00; }
+
+  footer {
+    text-align: center;
+    margin-top: 36px;
+    font-size: 0.75rem;
+    color: #444;
+    border-top: 1px solid #1e1e1e;
+    padding-top: 16px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<div class="header">
+  <h1>Rockford Fosgate T2D412 — Folded T-Line</h1>
+  <div class="subtitle">32 Hz Tune · T1000-1BDCP Amp · Truck Cab Install · 3/4" MDF · Heavy Damping</div>
+  <div class="badge-row">
+    <span class="badge">2Ω Parallel Wiring → 1,000W RMS</span>
+    <span class="badge">~92" Physical Line Length</span>
+    <span class="badge">~56 in² Cross-Section</span>
+    <span class="badge">3-Fold Layout</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════ DESIGN MATH ══════════════════════════ -->
+<section>
+  <h2>🔢 Design Mathematics</h2>
+  <div class="math-grid">
+    <div class="math-card">
+      <div class="label">Target Tune Frequency</div>
+      <div class="value">32 Hz</div>
+      <div class="detail">¼-wavelength resonance</div>
+    </div>
+    <div class="math-card">
+      <div class="label">Speed of Sound</div>
+      <div class="value">13,500 in/s</div>
+      <div class="detail">≈ 1,125 ft/s at 70°F</div>
+    </div>
+    <div class="math-card">
+      <div class="label">Theoretical Line Length</div>
+      <div class="value">105.5"</div>
+      <div class="detail">c ÷ (4 × 32 Hz)</div>
+    </div>
+    <div class="math-card">
+      <div class="label">Damping Correction (−12%)</div>
+      <div class="value">−12.7"</div>
+      <div class="detail">Heavy fill slows wave speed</div>
+    </div>
+    <div class="math-card">
+      <div class="label">Physical Line Length</div>
+      <div class="value">~92"</div>
+      <div class="detail">Effective after damping</div>
+    </div>
+    <div class="math-card">
+      <div class="label">T2D412 Cone Area (Sd)</div>
+      <div class="value">~500 cm²</div>
+      <div class="detail">≈ 77.5 in²</div>
+    </div>
+    <div class="math-card">
+      <div class="label">Line Cross-Section</div>
+      <div class="value">7" × 8"</div>
+      <div class="detail">56 in² ≈ 0.72× Sd ✓</div>
+    </div>
+    <div class="math-card">
+      <div class="label">Interior Wall Material</div>
+      <div class="value">3/4" MDF</div>
+      <div class="detail">Deduct 0.75" per shared wall</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════ FOLDED DIAGRAM ════════════════════════ -->
+<section>
+  <h2>📐 Folded Layout Diagram (Top-Down Section View)</h2>
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 760 300" width="100%" style="display:block; max-width:760px; margin:0 auto;">
+      <!-- Background -->
+      <rect width="760" height="300" fill="#141414" rx="8"/>
+
+      <!-- Box outer shell -->
+      <rect x="40" y="30" width="680" height="240" rx="6" fill="none" stroke="#444" stroke-width="2"/>
+
+      <!-- ── Fold walls ── -->
+      <!-- Wall between Leg 1 and Leg 2 (leaves gap at bottom) -->
+      <rect x="40" y="30" width="3" height="185" fill="#666"/>
+      <rect x="270" y="30" width="3" height="185" fill="#666"/>
+      <!-- Wall between Leg 2 and Leg 3 (leaves gap at top) -->
+      <rect x="270" y="115" width="3" height="155" fill="#666"/>
+      <rect x="500" y="115" width="3" height="155" fill="#666"/>
+      <!-- Wall after Leg 3 (terminus opening at top) -->
+      <rect x="500" y="30" width="3" height="185" fill="#666"/>
+
+      <!-- Leg labels -->
+      <!-- LEG 1 -->
+      <rect x="43" y="33" width="224" height="179" fill="#1e3a1e" rx="4" opacity="0.6"/>
+      <text x="155" y="105" text-anchor="middle" fill="#88cc88" font-size="13" font-weight="700">LEG 1</text>
+      <text x="155" y="122" text-anchor="middle" fill="#88cc88" font-size="11">~31" long</text>
+      <text x="155" y="138" text-anchor="middle" fill="#88cc88" font-size="11">Driver fires →</text>
+
+      <!-- Sub circle -->
+      <circle cx="155" cy="175" r="30" fill="#1a1a1a" stroke="#b22222" stroke-width="2.5"/>
+      <circle cx="155" cy="175" r="20" fill="none" stroke="#ff4444" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="155" y="179" text-anchor="middle" fill="#ff4444" font-size="9" font-weight="700">T2D412</text>
+
+      <!-- LEG 2 -->
+      <rect x="273" y="33" width="224" height="179" fill="#1e1e3a" rx="4" opacity="0.6"/>
+      <text x="385" y="105" text-anchor="middle" fill="#8888cc" font-size="13" font-weight="700">LEG 2</text>
+      <text x="385" y="122" text-anchor="middle" fill="#8888cc" font-size="11">~31" long</text>
+      <text x="385" y="138" text-anchor="middle" fill="#8888cc" font-size="11">← wave travels</text>
+
+      <!-- LEG 3 -->
+      <rect x="503" y="117" width="215" height="150" fill="#3a1e1e" rx="4" opacity="0.6"/>
+      <text x="610" y="180" text-anchor="middle" fill="#cc8888" font-size="13" font-weight="700">LEG 3</text>
+      <text x="610" y="197" text-anchor="middle" fill="#cc8888" font-size="11">~30" long</text>
+      <text x="610" y="213" text-anchor="middle" fill="#cc8888" font-size="11">→ terminus</text>
+
+      <!-- Terminus Opening -->
+      <rect x="716" y="117" width="2" height="150" fill="none"/>
+      <line x1="718" y1="117" x2="718" y2="267" stroke="#ffcc44" stroke-width="3" stroke-dasharray="6,4"/>
+      <text x="740" y="160" text-anchor="middle" fill="#ffcc44" font-size="10" font-weight="700">OPEN</text>
+      <text x="740" y="175" text-anchor="middle" fill="#ffcc44" font-size="10">MOUTH</text>
+      <text x="740" y="190" text-anchor="middle" fill="#ffcc44" font-size="10">(terminus)</text>
+
+      <!-- Flow arrows -->
+      <defs>
+        <marker id="arrowR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#88cc88"/>
+        </marker>
+        <marker id="arrowL" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto">
+          <path d="M8,0 L8,6 L0,3 z" fill="#8888cc"/>
+        </marker>
+        <marker id="arrowR2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#cc8888"/>
+        </marker>
+      </defs>
+      <!-- Leg1 to Leg2 bend (bottom) -->
+      <path d="M270,212 Q285,240 300,212" fill="none" stroke="#aaa" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <!-- Leg2 to Leg3 bend (top) -->
+      <path d="M500,60 Q515,40 530,60" fill="none" stroke="#aaa" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+      <!-- Dimension arrows - external -->
+      <!-- Width arrow -->
+      <line x1="40" y1="285" x2="720" y2="285" stroke="#555" stroke-width="1"/>
+      <line x1="40" y1="280" x2="40" y2="290" stroke="#555" stroke-width="1"/>
+      <line x1="720" y1="280" x2="720" y2="290" stroke="#555" stroke-width="1"/>
+      <text x="380" y="298" text-anchor="middle" fill="#888" font-size="11">External Width ≈ 38"</text>
+
+      <!-- Height arrow -->
+      <line x1="20" y1="30" x2="20" y2="270" stroke="#555" stroke-width="1"/>
+      <line x1="15" y1="30" x2="25" y2="30" stroke="#555" stroke-width="1"/>
+      <line x1="15" y1="270" x2="25" y2="270" stroke="#555" stroke-width="1"/>
+      <text x="10" y="155" text-anchor="middle" fill="#888" font-size="11" transform="rotate(-90,10,155)">Ext. Depth ≈ 12"</text>
+    </svg>
+  </div>
+  <p style="font-size:0.78rem;color:#666;margin-top:8px;padding-left:4px;">
+    ↑ Top-down cross-section view. The box is tall/vertical in the truck cab (behind the seat). Leg 1 is at the top, sub fires downward into the line. Terminus exits at the base toward the cab floor.
+  </p>
+</section>
+
+
+<!-- ═══════════════════════════════ CUT LIST ════════════════════════════════ -->
+<section>
+  <h2>🪚 Full Panel Cut List — 3/4" MDF</h2>
+  <p style="font-size:0.82rem;color:#aaa;margin-bottom:14px;">
+    All dimensions are <strong style="color:#ff8888">finished panel sizes</strong> (after cutting). Interior line dimensions are
+    <strong>7" wide × 8" tall</strong> (56 in²). Box external footprint: <strong>~16" W × 12" D × 38" H</strong>
+    — designed to stand upright behind a bench/split cab seat.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Panel Name</th>
+        <th>Qty</th>
+        <th>Dimensions (W × H)</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- OUTER SHELL -->
+      <tr>
+        <td><span class="dim">01</span></td>
+        <td><span class="part-name">Front Face</span></td>
+        <td>1</td>
+        <td><span class="dim">16" × 38"</span></td>
+        <td><span class="note">Outer front panel. Cut 12" sub hole centered at 25" from bottom (use jig saw + circle jig).</span></td>
+      </tr>
+      <tr>
+        <td><span class="dim">02</span></td>
+        <td><span class="part-name">Rear Panel</span></td>
+        <td>1</td>
+        <td><span class="dim">16" × 38"</span></td>
+        <td><span class="note">Solid — no cutout. Mirror of front face.</span></td>
+      </tr>
+      <tr>
+        <td><span class="dim">03</span></td>
+        <td><span class="part-name">Left Side</span></td>
+        <td>1</td>
+        <td><span class="dim">10.5" × 38"</span></td>
+        <td><span class="note">10.5" = 12" depth − 2× (3/4" front+rear). Solid panel.</span></td>
+      </tr>
+      <tr>
+        <td><span class="dim">04</span></td>
+        <td><span class="part-name">Right Side</span></td>
+        <td>1</td>
+        <td><span class="dim">10.5" × 38"</span></td>
+        <td><span class="note">Solid panel — mirror of left side.</span></td>
+      </tr>
+      <tr>
+        <td><span class="dim">05</span></td>
+        <td><span class="part-name">Top Cap</span></td>
+        <td>1</td>
+        <td><span class="dim">16" × 12"</span></td>
+        <td><span class="note">Closes top of box. Glued and screwed to all 4 sides.</span></td>
+      </tr>
+      <tr>
+        <td><span class="dim">06</span></td>
+        <td><span class="part-name">Bottom Cap</span></td>
+        <td>1</td>
+        <td><span class="dim">16" × 12"</span></td>
+        <td><span class="note">Terminus end. Cut a <strong>7" × 8" slot</strong> offset to the right chamber (flush with right leg). This is the open mouth of the T-line.</span></td>
+      </tr>
+
+      <!-- INTERNAL FOLD WALLS -->
+      <tr>
+        <td><span class="dim">07</span></td>
+        <td><span class="part-name">Fold Wall 1 (Divider A)</span></td>
+        <td>1</td>
+        <td><span class="dim">10.5" × 30"</span></td>
+        <td><span class="note">Runs front-to-back, creating Leg 1 and Leg 2 chambers. Stops 8.75" short of bottom cap — this gap is the fold/turn from Leg 1 → Leg 2.</span></td>
+      </tr>
+      <tr>
+        <td><span class="dim">08</span></td>
+        <td><span class="part-name">Fold Wall 2 (Divider B)</span></td>
+        <td>1</td>
+        <td><span class="dim">10.5" × 29"</span></td>
+        <td><span class="note">Creates Leg 2 and Leg 3 chambers. Starts at top cap and stops 9.5" short of bottom — fold/turn from Leg 2 → Leg 3 at the bottom.</span></td>
+      </tr>
+      <tr>
+        <td><span class="dim">09</span></td>
+        <td><span class="part-name">Sub Baffle / Shelf</span></td>
+        <td>1</td>
+        <td><span class="dim">9.5" × 10.5"</span></td>
+        <td><span class="note">Horizontal shelf at top of Leg 1 that the sub mounts to. Cut a 12" diameter hole for the T2D412 flush mount. Double-up (glue two layers) for rigidity.</span></td>
+      </tr>
+
+      <!-- BRACING -->
+      <tr>
+        <td><span class="dim">10</span></td>
+        <td><span class="part-name">Interior Braces (side wall)</span></td>
+        <td>4</td>
+        <td><span class="dim">1.5" × 10.5" strips</span></td>
+        <td><span class="note">Glue horizontally across front/rear panels at ~10", 20", and 30" intervals to prevent panel flex under pressure. Rip from MDF offcuts.</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="warn-box" style="margin-top:14px;">
+    <strong>⚠ MDF Sheet Planning:</strong> All panels above cut from two standard 4×8 sheets (48"×96") of 3/4" MDF.
+    Layout the large panels (Front, Rear, Sides) first, then cut internals from remaining material.
+    Expect ~1 full sheet + partial second sheet. Have the lumber yard rip sheets to 16" strips if possible.
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════ LINE ROUTING ═══════════════════════════ -->
+<section>
+  <h2>📏 Internal Line Routing &amp; Length Verification</h2>
+  <table>
+    <thead>
+      <tr><th>Leg</th><th>Travel Direction</th><th>Interior Length</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="dim">Leg 1</span></td>
+        <td>Top → Bottom (driver enters at top)</td>
+        <td><span class="dim">~31"</span></td>
+        <td><span class="note">Leg 1 width = 4.25" interior (half of 9.5" internal width minus divider wall). Height = full 36.5" interior − 4.75" baffle shelf area. <em>Effective: 31"</em></span></td>
+      </tr>
+      <tr>
+        <td><span class="dim">Turn 1</span></td>
+        <td>Leg 1 → Leg 2 (bottom bend)</td>
+        <td><span class="dim">+8.75"</span></td>
+        <td><span class="note">The 8.75" gap under Divider A adds to line length as the wave bends around the wall end.</span></td>
+      </tr>
+      <tr>
+        <td><span class="dim">Leg 2</span></td>
+        <td>Bottom → Top</td>
+        <td><span class="dim">~29"</span></td>
+        <td><span class="note">Returns upward in the center channel between the two divider walls.</span></td>
+      </tr>
+      <tr>
+        <td><span class="dim">Turn 2</span></td>
+        <td>Leg 2 → Leg 3 (top bend)</td>
+        <td><span class="dim">+9.5"</span></td>
+        <td><span class="note">9.5" gap under Divider B at top of box.</span></td>
+      </tr>
+      <tr>
+        <td><span class="dim">Leg 3</span></td>
+        <td>Top → Bottom → Terminus</td>
+        <td><span class="dim">~13.75"</span></td>
+        <td><span class="note">Final leg exits through the 7"×8" slot in the bottom cap. Terminus is flush with the cab floor. Total = 31+8.75+29+9.5+13.75 = <strong>92"</strong> ✓</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="margin-top:12px;font-size:0.82rem;color:#aaa;">
+    <strong style="color:#ff8888">Total line length: 92"</strong> — matches our damping-corrected target (105.5" × 0.875 = 92.3") ✓
+  </p>
+</section>
+
+
+<!-- ═══════════════════════════════ DAMPING ══════════════════════════════ -->
+<section>
+  <h2>🧶 Damping Material Plan</h2>
+  <div class="damp-bar-wrap">
+    <div class="damp-label-row">
+      <span>Driver end → Start of Line</span>
+      <span>← Terminus / Open Mouth</span>
+    </div>
+    <div class="damp-bar">
+      <div class="damp-free">Free Zone<br><span style="font-size:0.7rem;font-weight:400;">First ~14" (Leg 1 top + Turn 1)</span></div>
+      <div class="damp-fill">Damped — Long-Fiber Wool or Acousta-Stuf<br><span style="font-size:0.7rem;font-weight:400;">Remaining ~78" of line</span></div>
+    </div>
+    <div class="damp-notes">
+      <strong style="color:#ff8888">Why the free zone?</strong> Leaving the first section near the driver undamped lets the cone pressurize and load into the line properly.
+      Damping too close to the driver reduces efficiency and output.<br><br>
+      <strong style="color:#ff8888">How much fill?</strong> Loosely pack (don't compress) long-fiber wool. A medium density fill — you should see through it, not compress it into a solid mass.
+      Use staples or thin wire to hold material against walls rather than blocking the center path.<br><br>
+      <strong style="color:#ff8888">Recommended material:</strong> Acousta-Stuf polyfill (Best Buy / Parts Express), long-fiber sheep's wool, or open-cell acoustic foam strips along walls.
+      Avoid closed-cell foam or fiberglass — wrong density.
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════ AMP SETTINGS ════════════════════════ -->
+<section>
+  <h2>🎛️ T1000-1BDCP Amp Settings (for this build)</h2>
+  <div class="settings-grid">
+    <div class="setting-card">
+      <div class="s-label">Wiring</div>
+      <div class="s-value">2Ω (Parallel)</div>
+      <div class="s-note">Both 4Ω voice coils wired in parallel → 2Ω final load. Full 1,000W RMS to sub.</div>
+    </div>
+    <div class="setting-card">
+      <div class="s-label">Low-Pass Filter</div>
+      <div class="s-value">80 Hz</div>
+      <div class="s-note">Rolls off content above 80 Hz. Set at 12 dB/oct (onboard switch).</div>
+    </div>
+    <div class="setting-card">
+      <div class="s-label">Subsonic Filter</div>
+      <div class="s-value">28 Hz (ON)</div>
+      <div class="s-note">Use the onboard 28 Hz subsonic switch. Protects driver below the 32 Hz tune point.</div>
+    </div>
+    <div class="setting-card">
+      <div class="s-label">Bass Boost (PBC)</div>
+      <div class="s-value">0 dB (OFF)</div>
+      <div class="s-note">T-line provides natural acoustic gain. Boost risks over-excursion at 1,000W. Leave off.</div>
+    </div>
+    <div class="setting-card">
+      <div class="s-label">Gain Setting</div>
+      <div class="s-value">DMM Method</div>
+      <div class="s-note">Set with 50Hz tone at −5 dBFS. Target: ~44.7V RMS across terminals (= 1,000W into 2Ω). Never set by ear at high volumes.</div>
+    </div>
+    <div class="setting-card">
+      <div class="s-label">Remote Level</div>
+      <div class="s-value">Start at 50%</div>
+      <div class="s-note">Use remote level control (RFC) as a daily volume trim, not a gain substitute.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════ ASSEMBLY ORDER ══════════════════════ -->
+<section>
+  <h2>🔧 Recommended Build &amp; Assembly Order</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Cut All Panels</h3>
+        <p>Use a circular saw with a straight-edge guide for all rips. Use a jigsaw with a circle jig for the 12" sub cutout in the baffle. Sand all cut edges with 80-grit.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Dry-Fit First</h3>
+        <p>Assemble without glue or screws to verify all panels align, the line path flows correctly, and the sub sits flush. Mark all panel faces with a pencil before disassembly.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Install Divider Wall A (Fold Wall 1)</h3>
+        <p>Glue and screw Divider A between the front and rear panels first, stopping 8.75" from the bottom. Use corner clamps and 1-5/8" drywall screws every 4–5". Pre-drill and countersink all MDF screws to avoid splitting.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Install Divider Wall B (Fold Wall 2)</h3>
+        <p>Glue and screw Divider B starting from the top cap down, stopping 9.5" from the bottom. This creates your 3-leg fold path. Verify the interior width of each leg is 4.25" front-to-back at this stage.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h3>Close the Box — Sides, Top, Bottom</h3>
+        <p>Attach left side, right side, top cap, and bottom cap with PL Premium construction adhesive + screws. Seal all interior seams with silicone caulk or wood glue. <strong>Every seam must be airtight</strong> — use a flashlight inside and feel for airflow while a helper blows into the terminus.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <h3>Mount the Sub Baffle</h3>
+        <p>Double up the baffle (glue two 3/4" layers together = 1.5" thick) for the T2D412's motor weight. Pre-drill speaker bolt holes (typically M6 or T-nuts) before gluing to the box. Use a foam gasket or weather stripping between sub and baffle for an airtight seal.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <h3>Install Damping Material</h3>
+        <p>Starting 14" from the driver, loosely fill the rear 2/3 of the line with Acousta-Stuf or long-fiber wool. Staple to walls — do not pack tight. Leave the center of the line path clear. Do not damp Leg 3 near the terminus.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">8</div>
+      <div class="step-body">
+        <h3>Wire, Test, and Tune</h3>
+        <p>Wire both voice coils in parallel (2Ω). Run a 1/0 AWG power feed minimum to the T1000-1BDCP. Set gain with a DMM and 50 Hz test tone. Play music at moderate volume for 10 minutes and feel the cone — it should be warm but not hot, with no mechanical noise (slap, crunch, or bottoming).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════ HARDWARE LIST ═══════════════════════ -->
+<section>
+  <h2>🛒 Hardware &amp; Materials Shopping List</h2>
+  <table>
+    <thead>
+      <tr><th>Item</th><th>Qty / Amount</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="part-name">3/4" MDF sheet (4×8)</td><td class="dim">2 sheets</td><td class="note">One full + one partial. Total panel area ≈ 54 sq ft.</td></tr>
+      <tr><td class="part-name">PL Premium construction adhesive</td><td class="dim">2 tubes</td><td class="note">Or Liquid Nails Heavy Duty. For all panel-to-panel joints.</td></tr>
+      <tr><td class="part-name">1-5/8" coarse drywall screws</td><td class="dim">1 box (1 lb)</td><td class="note">Pre-drill + countersink every single screw in MDF.</td></tr>
+      <tr><td class="part-name">Silicone caulk (clear or black)</td><td class="dim">1 tube</td><td class="note">Seal every interior seam after assembly.</td></tr>
+      <tr><td class="part-name">Acousta-Stuf polyfill or long-fiber wool</td><td class="dim">1 lb bag</td><td class="note">Available at Parts Express (Acousta-Stuf). Loosely fill rear 2/3 of line.</td></tr>
+      <tr><td class="part-name">T-nuts (M6 × 1.0 or 1/4"-20)</td><td class="dim">4</td><td class="note">For sub mounting. Match T2D412 mounting hardware.</td></tr>
+      <tr><td class="part-name">Closed-cell foam gasket tape (1/4" thick)</td><td class="dim">3 ft</td><td class="note">Seal between sub basket and baffle.</td></tr>
+      <tr><td class="part-name">16 AWG speaker wire (tinned, CCA or OFC)</td><td class="dim">3 ft</td><td class="note">Internal wiring from terminal cup to sub.</td></tr>
+      <tr><td class="part-name">Speaker terminal cup</td><td class="dim">1</td><td class="note">Mount on the rear panel. Use spring-loaded or binding post style.</td></tr>
+      <tr><td class="part-name">Carpet or vinyl wrap (optional)</td><td class="dim">1.5 yards</td><td class="note">Truck-bed or charcoal carpet for a clean install look.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  Rockford Fosgate T2D412 + T1000-1BDCP · Truck Cab T-Line Build · 32 Hz · Generated 2026<br>
+  All dimensions assume 3/4" MDF (actual 0.75"). Verify sub cutout diameter against your specific T2D412 mounting template before cutting.
+</footer>
+
+</body>
+</html>
